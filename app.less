@@ -1,0 +1,124 @@
+@import "mixins";
+@import "dialog";
+
+@import "UploadStatement";
+@import "DateRange";
+@import "Expenses";
+@import "Sync";
+@import "TrendChart";
+
+body {
+	margin: 0;
+}
+
+h1 {
+	text-align: center;
+}
+
+.ui {
+	font-family: sans-serif;
+}
+
+.menu {
+	position: relative;
+	border-width: 1px;
+	border-color: darkgray;
+	border-bottom-style: solid;
+	font-size: 0;
+
+	&::before {
+		content: ' ';
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		left: 0;
+		pointer-events: none;
+		-webkit-appearance: button;
+		padding: .4em;
+	}
+
+	button {
+		pointer-events: auto;
+		position: relative;
+		z-index: 2;
+		background: transparent;
+		border-top-style: none;
+		border-left-style: none;
+		border-right-style: solid;
+		border-width: 1px;
+		border-color: darkgray;
+		padding: .4em;
+		margin: 0px;
+		font-size: large;
+		text-transform: capitalize;
+
+		&:hover {
+			background: rgba(89, 161, 255, .3);
+		}
+
+		&:last-child {
+			border-right-style: none;
+			border-left-style: solid;
+		}
+
+		&.expenses::before {
+			content: '⬅';
+			margin-right: 2pt;
+		}
+	}
+}
+
+button#sync {
+	float: right;
+}
+
+date-range {
+	text-align: center;
+}
+
+.contextMenu {
+	font-family: sans-serif;
+	background: white;
+	border-style: solid;
+	border-width: 1px;
+	border-color: gray;
+	border-radius: 3px;
+	box-shadow: 0px 6px 10px 2px #aaa;
+
+	ul {
+		list-style: none;
+		padding: .2em;
+		margin: 0;
+	}
+	li {
+		padding-top: .1em;
+		padding-bottom: .1em;
+		padding-left: .5em;
+		padding-right: .5em;
+		cursor: default;
+		user-select: none;
+		-webkit-user-select: none;
+
+		&:hover {
+			background: rgba(177, 177, 177, .5);
+		}
+	}
+}
+
+button.next, button.prev {
+	display: inline-block;
+	vertical-align: middle;
+	height: 2em;
+	width: 2.5em;
+	font-family: mono;
+}
+button.prev::before {
+	content: '◄';
+	&::before {
+		margin-left: -.2em;
+	}
+}
+button.next::before {
+	content: '►';
+}

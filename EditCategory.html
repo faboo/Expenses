@@ -1,0 +1,72 @@
+<dialog>
+	<datalist id="category-names">
+		<option ng-repeat="category in categories" value="{{category}}">
+	</datalist>
+
+	<div class="content">
+		<h2 ng-if="category">Edit Category</h2>
+		<h2 ng-if="!category">Create Category</h2>
+
+		<div>
+			<label>
+				Name
+				<input type="text" autocomplete=on list="category-names" ng-model="setup.id">
+			</label>
+		</div>
+		<div>
+			<label>
+				Budget
+				<input type="number" step=".01" ng-model="setup.budget">
+			</label>
+		</div>
+		<div>
+			<label>
+				Display Order
+				<input type="number" step="1" ng-model="setup.order">
+			</label>
+		</div>
+		<div>
+			<label>
+				Hidden
+				<input type="checkbox" ng-model="setup.hide">
+			</label>
+		</div>
+		<div>
+			<label>
+				Expected
+			</label>
+			<span ng-repeat="week in weeks">
+				<label>
+					{{week.name}}
+					<input type="checkbox" ng-disabled="!setup.hide" checklist-model="setup.weeks" checklist-value="week.value">
+				</label>
+			</span>
+		</div>
+		<hr>
+		<div>
+			<label>
+				Apply Automatically
+				<input type="checkbox" ng-model="setup.auto">
+			</label>
+		</div>
+		<div>
+			<label>
+				Description Test
+				<input type="text" ng-model="setup.descriptionTest" ng-disabled="!setup.auto">
+			</label>
+		</div>
+		<!--
+		<div>
+			<label>
+				Amount Test
+				<input type="number" ng-model="setup.amountTest" step=".01" ng-disabled="!setup.auto">
+			</label>
+		</div>
+		-->
+	</div>
+
+	<div class="buttons">
+		<button type="button" ng-click="accept()">Accept</button>
+		<button type="button" ng-click="close()">Cancel</button>
+	</div>
+</dialog>

@@ -1,0 +1,196 @@
+expenses {
+	margin-left: 8px;
+	margin-right: 8px;
+
+	.good {
+		color: #18d60e;
+	}
+
+	.bad {
+		color: #d63131;
+	}
+
+	ul#hiddenCategories {
+		list-style: none;
+		padding: .2em;
+		margin: 0;
+
+		li {
+			display: inline-block;
+			position: relative;
+			border-style: solid;
+			border-color: black;
+			border-width: 1px;
+			font-size: large;
+			margin: .3em;
+			padding-top: .3em;
+			padding-bottom: .4em;
+			padding-left: .7em;
+			padding-right: .7em;
+
+			&.populated {
+				background: #00FB1D;
+
+				&.late {
+					background: goldenrod;
+				}
+			}
+
+			.expenses {
+				position: absolute;
+				background: white;
+				margin-left: -.6em;
+				margin-top: .6em;
+				box-shadow: 3px 3px 5px 5px #ccc;
+
+				.description {
+					height: 1.2em;
+					width: 15em;
+					text-overflow: ellipsis;
+					overflow: hidden;
+				}
+
+				td:first-child {
+					border-left-style: solid;
+				}
+			}
+		}
+	}
+	button.showHidden {
+		display: block;
+		width: 10em;
+		margin-left: auto;
+		margin-right: auto;
+		padding-left: 1em;
+		padding-right: 1em;
+
+		&::before {
+			content: '▼';
+			float: left;
+		}
+		&::after {
+			content: '▼';
+			float: right;
+		}
+
+		&.hide {
+			&::before {
+				content: '▲';
+			}
+			&::after {
+				content: '▲';
+			}
+		}
+	}
+
+	table {
+		border-spacing: 0;
+
+		&.all {
+			width: 100%;
+		}
+	}
+
+	th {
+		.ui();
+		text-align: left;
+		text-transform: capitalize;
+
+		&.expand {
+			width: 1%;
+		}
+		&.date {
+			width: 7%;
+		}
+		&.description {
+			width: 74%;
+		}
+		&.budget {
+			width: 7%;
+		}
+		&.amount {
+			min-width: 7%;
+		}
+	}
+
+
+	tr.dragging {
+		opacity: 0;
+	}
+
+	tbody tr.expense {
+		&.dragging {
+			opacity: 0;
+		}
+		&:nth-child(4n-1) {
+			background: rgba(191, 242, 255, 0.44);
+		}
+		&.anticipated {
+			color: blue;
+		}
+		td {
+			border-width: 0px;
+			border-top: 1px;
+			border-bottom: 1px;
+			border-style: dashed;
+			border-color: transparent;
+			padding: .2em;
+
+			&:first-child {
+				border-left-width: 1px;
+			}
+			&:last-child {
+				border-right-width: 1px;
+			}
+		}
+		&.dropHover td {
+			border-color: gray;
+		}
+	}
+
+	table.sub-expense {
+		width: 100%;
+
+		td {
+			border-width: 1px;
+			border-right-style: solid;
+			border-bottom-style: solid;
+			padding-left: .5em;
+			padding-right: .5em;
+
+			&.remove {
+				border-top-style: none;
+				border-bottom-style: none;
+				padding-left: 0;
+			}
+		}
+		tr:first-child td {
+			border-top-style: solid;
+
+			&.remove {
+				border-top-style: none;
+			}
+		}
+	}
+
+	.breakdown table {
+		font-size: large;
+		display: inline-block;
+		margin-top: 1em;
+		margin-bottom: 1em;
+		margin-right: 2em;
+
+		td {
+			padding-right: .5em;
+		}
+	}
+
+	.contextMenu {
+		position: fixed;
+		display: none;
+
+		&.open {
+			display: block;
+		}
+	}
+}

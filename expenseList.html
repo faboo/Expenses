@@ -1,0 +1,25 @@
+<div class="menu">
+	<button type=button ng-click="incomeOpen = true">Edit Income</button>
+	<button type="button" ng-click="uploadOpen = true">upload bank statement</button>
+	<button type="button" ng-click="createCategory = true">new recurring bill</button>
+	<button type="button" ng-click="createAdjustment = true">new adjustment</button>
+	<button type="button" ng-click="createAnticipated = true">expect charge</button>
+
+	<button type=button id=sync ng-disabled="!dropboxLoaded || dropboxLoggedIn" ng-click="syncWithDropbox()">
+		<span ng-if="dropboxLoggedIn"><sync syncing="syncing()"></sync>syncing</span>
+		<span ng-if="!dropboxLoggedIn">sync</span>
+	</button>
+</div>
+<date-range year="year" month="month" week="week"></date-range>
+
+<expenses year="year" month="month" week="week"></expenses>
+
+<a href="data:Application/octet-stream,{{configuration}}" ng-click="configuration = downloadConfig()">Download Configuration</a>
+<label>Import config:</label>
+<input type=file id="configUpload" accept=".json">
+
+<income open="incomeOpen"></income>
+<upload-statement open="uploadOpen"></upload-statement>
+<edit-category open="createCategory"></edit-category>
+<edit-adjustment open="createAdjustment" date="endDate"></edit-adjustment>
+<edit-anticipated open="createAnticipated"></edit-anticipated>

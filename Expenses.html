@@ -1,0 +1,110 @@
+<ul id="hiddenCategories">
+	<li
+		ng-repeat="category in hiddenCategories | filter:showCategory track by $index"
+		ng-class="{populated: category.expenses.length, late: categoryLate(category) }"
+		ng-right-click="openMenu($event, category)"
+		data-id="{{category.id}}"
+		on-drop="onDrop($event, $data)"
+		hover="expenses"
+		>
+		{{category.description}}
+
+		<div ng-show="expenses && category.expenses.length" class="expenses">
+			<table class="sub-expense">
+				<tr ng-repeat="sub in category.expenses track by $index">
+					<td>{{sub.date | date: 'M/d/yy'}}</td>
+					<td><div class="description">{{sub.description || ('Check #'+sub.checkId)}}</div></td>
+					<td>{{-sub.amount | exCurrency}}</td>
+				</tr>
+			</table>
+		</div>
+	</li>
+</ul>
+<button type=button title="Show All" class="showHidden" ng-class="{hide: showHidden}" ng-click="expandHidden()"></button>
+
+<table class="all">
+	<thead>
+		<tr>
+			<th class="expand"><!-- expand category --></th>
+			<th class="date">date</th>
+			<th class="description">description</th>
+			<th class="budget">budget</th>
+			<th class="amount">amount</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr
+			ng-repeat-start="expense in expenseList | order track by $index"
+			class="expense"
+			ng-class="{anticipated: expense.type === 'ANTICIPATED'}"
+			data-id="{{expense.id}}"
+			ng-init="open = false"
+			ng-right-click="openMenu($event, expense)"
+			draggable="true"
+			drag-data="expense.id"
+			drop-target="true"
+			on-drop="onDrop($event, $data)"
+			>
+			<td>
+				<input ng-show="expense.expenses" type="checkbox" ng-model="open">
+			</td>
+			<td><span ng-if="expense.date">{{expense.date | date: 'M/d/yy'}}</span></td>
+			<td>{{expense.description || ('Check #'+expense.checkId)}}</td>
+			<td>{{expense.budget | exCurrency}}</td>
+			<td title="{{expense.loss}}" ng-class="{bad: overBudget(expense)}">{{-expense.amount | exCurrency}}</td>
+		</tr>
+		<tr ng-repeat-end ng-show="open" class="sub-expenses">
+			<td></td>
+			<td colspan="4">
+				<table class="sub-expense">
+					<tr
+						ng-repeat="sub in expense.expenses track by $index"
+						draggable="true"
+						drag-data="expense.id"
+						ng-right-click="openMenu($event, sub)"
+						>
+						<td class="remove"><button type="button" ng-click="removeCategory(sub)">X</button></td>
+						<td>{{sub.date | date: 'M/d/yy'}}</td>
+						<td>{{sub.description || ('Check #'+sub.checkId)}}</td>
+						<td>{{-sub.amount | exCurrency}}</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<div class="breakdown">
+	<table>
+		<tr>
+			<td class="ui">Revenue ☺</td> <td ng-class="{good: revenue &gt; 0}">{{income + revenue | exCurrency}}</td>
+		</tr>
+		<tr>
+			<td class="ui">Should spend ☹</td> <td>{{budget | exCurrency}}</td>
+		</tr>
+		<tr>
+			<td class="ui">Actually spent ☹</td> <td>{{spent | exCurrency}}</td>
+		</tr>
+	</table>
+
+	<table>
+		<tr>
+			<td class="ui">Planned Money Left</td> <td>{{income-budget | exCurrency}}</td>
+		</tr>
+		<tr>
+			<td class="ui">Actual Money Left</td> <td ng-class="{bad: spent &gt; (income + revenue), good: spent &lt; budget}">{{(income + revenue)-spent+anticipated | exCurrency}}</td>
+		</tr>
+	</table>
+</div>
+
+<div class="contextMenu" ng-class="{open: menuItem}" ng-style="{left:menuLeft, top:menuTop}" offclick="menuItem = null">
+	<ul>
+		<li ng-show="canCategorize()" ng-click="categorize()">categorize</li>
+		<li ng-show="canTrend()" ui-sref="categoryTrend({trend:menuItem.id})" ui-sref-opts="">trend</li>
+		<li ng-show="canEdit()" ng-click="edit()">edit</li>
+		<li ng-show="canRemove()" ng-click="remove()">remove</li>
+	</ul>
+</div>
+<edit-category category="editCategory" open="openCategory" save="saveCategory(category)">
+</edit-category>
+<edit-adjustment adjustment="editAdjustment" open="editAdjustment"></edit-adjustment>

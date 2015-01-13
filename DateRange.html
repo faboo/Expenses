@@ -1,0 +1,12 @@
+<button type=button class="prev" ng-click="prevWeek()"></button>
+<div class="selector">
+	<input type=number ng-model="year">
+	<select ng-model="month" ng-options="month as month.name for month in months"></select>
+
+	<div>
+		<button ng-repeat="wk in weeks[month.days]" type="button" ng-class="{selected: wk === week}" ng-click="select(wk)">
+			{{month.number}}/{{wk.start}} - {{month.number}}/{{wk.end}}
+		</button>
+	</div>
+</div>
+<button type=button class="next" ng-click="nextWeek()"></button>

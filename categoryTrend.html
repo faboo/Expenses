@@ -1,0 +1,13 @@
+<div class="menu">
+	<button class="expenses" type=button ui-sref="expenseList" ui-sref-opts="">Expenses</button>
+</div>
+
+<div class="trend">
+	<h1>
+		<button type=button class="prev" ng-click="year = year - 1"></button>
+		<span>{{category}} {{year}}</span>
+		<button type=button class="next" ng-click="year = year + 1"></button>
+	</h1>
+
+	<trend-chart category="category" data="data"></trend-chart>
+</div>

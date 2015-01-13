@@ -1,0 +1,27 @@
+<dialog>
+	<div class="content">
+		<h2>Edit Weekly Income</h2>
+	
+		<div>
+			<label>Week 1</label>
+			<input type=number step=".01" ng-model="income[0]">
+		</div>
+		<div>
+			<label>Week 2</label>
+			<input type=number step=".01" ng-model="income[1]">
+		</div>
+		<div>
+			<label>Week 3</label>
+			<input type=number step=".01" ng-model="income[2]">
+		</div>
+		<div>
+			<label>Week 4</label>
+			<input type=number step=".01" ng-model="income[3]">
+		</div>
+	</div>
+
+	<div class="buttons">
+		<button type="button" ng-click="accept()">Accept</button>
+		<button type="button" ng-click="close()">Cancel</button>
+	</div>
+</dialog>

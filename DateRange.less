@@ -1,0 +1,28 @@
+date-range {
+	display: block;
+	margin: .5em;
+	font-size: large;
+
+	input[type=number] {
+		width: 4.5em;
+	}
+
+	.selector {
+		display: inline-block;
+		vertical-align: middle;
+
+		select {
+			display: inline;
+			margin: .1em;
+		}
+		button {
+			margin: .1em;
+
+			&.selected {
+				border-radius: 3px;
+				border-width: 1px;
+				background: -webkit-linear-gradient(top, #e1ffff 0%,#e1ffff 7%,#e1ffff 12%,#fdffff 12%,#e6f8fd 30%,#c8eefb 54%,#bee4f8 75%,#b1d8f5 100%);
+			}
+		}
+	}
+}

@@ -1,0 +1,38 @@
+<dialog>
+	<div class="content">
+		<div class="dropzone" ng-show="!parsedStatement">
+			<p>Drop Bank Statement Here</p>
+			<input class="statementUpload" type="file" accept=".csv">
+		</div>
+
+		<div class="preview" ng-show="parsedStatement">
+			<table>
+				<thead>
+					<tr>
+						<th>date</th>
+						<th>description</th>
+						<th>change</th>
+						<th>balance</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="expense in parsedStatement track by $index">
+						<td>{{expense.date | date: 'M/d/yy'}}</td>
+						<td>{{expense.description}}</td>
+						<td>{{expense.amount}}</td>
+						<td>{{expense.balance}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="buttons">
+		<span ng-show="parsedStatement">
+			<button type="button" ng-click="accept()">Accept and Import</button>
+			<button type="button" ng-click="reject()">Reject</button>
+		</span>
+		<button type="button" ng-click="close()">Cancel</button>
+	</div>
+
+</dialog>
