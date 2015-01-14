@@ -738,6 +738,16 @@
 	//
 	// Objects
 
+	/**
+	 * Get the values of all the properties of an object, i.e the opposite of
+	 * Object.keys. Returns a new array containing the value of each
+	 * (enumerable) property of the object. The order of the array is not
+	 * gauranteed.
+	 *
+	 * Example:
+	 * 	fn.values({a: 1, b: 2})
+	 *	// -> [1, 2]
+	 */
 	function values(object){
 		var values = []
 
@@ -747,6 +757,19 @@
 		return values
 	}
 
+	/**
+	 * Get the value of a property, of an object. Returns the value of the
+	 * property with that name from the object. If the property is an array, it
+	 * is treated as a path to the value, retrieving each object in turn,
+	 * returning the final value.
+	 *
+	 * Example:
+	 * 	fn.prop('a', {a: 1, b: 2, c: 3})
+	 *	// -> 1
+	 *
+	 * 	fn.prop(['a', 'b'], {a: {b: 2}, c: 3})
+	 *	// -> 2
+	 */
 	function prop(key, object){
 		var result = object
 
@@ -761,6 +784,16 @@
 		return result
 	}
 
+	/**
+	 * Get the properties of an object as key/value pairs. Returns a new array
+	 * with elements for each (enumerable) property in the object. Each property
+	 * is represented as a two element array whose elements are the key of
+	 * property and the value of the property.
+	 *
+	 * Example:
+	 * 	fn.pairs({a: 1, b: 2})
+	 *	// -> [['a', 1], ['b', 2]]
+	 */
 	function pairs(object){
 		var array = []
 
@@ -770,10 +803,35 @@
 		return array
 	}
 
+	/**
+	 * Determine whether an object is an instance of a type.
+	 *
+	 * Example:
+	 * 	fn.is(Function, function(){ })
+	 *	// -> true
+	 */
 	function is(type, object){
 		return object instanceof type
 	}
 
+	/**
+	 * Copies properties from one object to another. Returns first object, which
+	 * is updated (in place) with the properties on the second, over-writing
+	 * those properties in the first object if they already exist.
+	 *
+	 * Example:
+	 * 	var obj = {a: 1}
+	 * 	fn.assign(obj, {b: 2})
+	 *	// -> {a: 1, b: 2}
+	 *	obj.b
+	 *	// -> 2
+	 *
+	 * 	var obj = {a: 1}
+	 * 	fn.assign(obj, {a: 3, b: 2})
+	 *	// -> {a: 3, b: 2}
+	 *	obj.a
+	 *	// -> 3
+	 */
 	function assign(obj, proto){
 		for(var key in proto)
 			obj[key] = proto[key]
@@ -781,7 +839,19 @@
 		return obj
 	}
 
+	/**
+	 * Determine whether an object has properties as defined by a template
+	 * object. Returns true if the object matches the template. Property values
+	 * are compared using strict equality (===).
+	 *
+	 * Example:
+	 * 	fn.has({a: 1}, {a: 1, b: 2})
+	 *	// -> true
+	 * 	fn.has({a: 2}, {a: 1, b: 2})
+	 *	// -> false
+	 */
 	function has(template, object){
+		// TODO: make this a deep comparison
 		var match = true
 
 		for(var key in template)
@@ -790,6 +860,14 @@
 		return match
 	}
 
+	/**
+	 * Get the values of a set of properties of an object. Returns a new array
+	 * whose elements are the values of the properties named in the array.
+	 *
+	 * Example:
+	 * 	fn.prop(['a', 'b'], {a: 1, b: 2, c: 3})
+	 *	// -> [1, 2]
+	 */
 	function pick(keys, object){
 		var picked = { }
 
@@ -803,11 +881,33 @@
 		return picked
 	}
 
+	/**
+	 * Like Array.prototype.forEach, call a function for each property on an
+	 * object. The Function is called with the property value, key, and then the
+	 * object itself as arguments.
+	 *
+	 * Example:
+	 * 	fn.forIn(
+	 * 		function(value, key, obj){
+	 * 			console.log(key+': '+value)
+	 * 		},
+	 * 		{a: 1, b: 2})
+	 */
 	function forIn(func, object){
 		for(key in object)
 			func(object[key], key, object)
 	}
 
+	/**
+	 * Similar to Array.prototype.map, map a function over the values of an
+	 * object.  Returns a new object whose properties are those of the original
+	 * object where the property values have been passed through the provided
+	 * function.
+	 *
+	 * Example:
+	 * 	fn.mapValues(function(i){return i + 1}, {a: 1, b: 2})
+	 *	// -> {a: 2, b: 3}
+	 */
 	function mapValues(func, object){
 		var result = { }
 
@@ -817,6 +917,15 @@
 		return result
 	}
 
+	/**
+	 * Returns a new object whose properties are those of the provided object
+	 * for which a test function returns truthy. The test function is passed the
+	 * property value, key, and the original object itself.
+	 *
+	 * Example:
+	 * 	fn.filterValues(function(v){return v%2}, {a: 3, b: 4})
+	 *	// -> {b: 4}
+	 */
 	function filterValues(func, object){
 		var result = { }
 
@@ -830,20 +939,51 @@
 	//
 	// Util
 
+	/**
+	 * Returns the value passed to it verbatim.
+	 *
+	 * Example:
+	 * 	fn.id(3)
+	 *	// -> 3
+	 */
 	function id(value){
 		return value
 	}
 
+	/**
+	 * Creates a function that always returns a particular value.
+	 *
+	 * Example:
+	 * 	three = fn.constant(3)
+	 * 	three()
+	 *	// -> 3
+	 * 	three(40)
+	 *	// -> 3
+	 */
 	function constant(value){
 		return function(){
 			return value
 		}
 	}
 
+	/**
+	 * Returns try if the passed argument is a number.
+	 *
+	 * Example:
+	 * 	fn.isNumber(3)
+	 *	// -> true
+	 * 	fn.isNumber("3")
+	 *	// -> false
+	 */
 	function isNumber(value){
 		return (typeof value) === 'number' || value instanceof Number
 	}
-	
+
+	/**
+	 * Converts an array-like object to an array. Returns a new array whose
+	 * elements are the numeric properties of the provided collection less than
+	 * the length property of the collection.
+	 */
 	function toArray(collection){
 		var array = []
 
@@ -853,34 +993,59 @@
 		return array
 	}
 
+	/**
+	 * Combines arguments with the + operator.
+	 */
 	function add(left, right){
 		return left + right
 	}
 
+	/**
+	 * Compares the arguments with the < operator.
+	 */
 	function less(left, right){
 		return left < right
 	}
 
+	/**
+	 * Compares the arguments with the > operator.
+	 */
 	function greater(left, right){
 		return left > right
 	}
 
+	/**
+	 * Combines arguments with the || operator.
+	 */
 	function or(left, right){
 		return left || right
 	}
 
+	/**
+	 * Combines arguments with the && operator.
+	 */
 	function and(left, right){
 		return left && right
 	}
 
+	/**
+	 * Negates the argument - with the - operator if the argument is a number,
+	 * and with the ! operator otherwise.
+	 */
 	function not(value){
 		return isNumber(value)? -value : !value;
 	}
 
+	/**
+	 * Compares the arguments with the === operator.
+	 */
 	function equal(left, right){
 		return left === right
 	}
 
+	/**
+	 * Returns a number in the range [low, high).
+	 */
 	function random(low, high){
 		var range = high - low
 
